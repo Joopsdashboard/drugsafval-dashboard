@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HBO Onderzoeksdashboard – Respons op drugsafval</title>
+<style>
+:root{
+ --navy:#17324d;--blue:#28658f;--light:#eef4f8;--bg:#f5f7f9;--white:#fff;
+ --text:#1d2935;--muted:#61707d;--line:#d9e1e7;--orange:#d88925;--green:#36785a;
+ --shadow:0 5px 20px rgba(21,43,62,.08)
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif;line-height:1.55}
+header{background:var(--navy);color:#fff;padding:42px 22px 38px}
+.container{max-width:1180px;margin:auto}
+.kicker{font-size:12px;text-transform:uppercase;letter-spacing:.13em;font-weight:bold;opacity:.8}
+h1{font-size:clamp(30px,4vw,48px);line-height:1.08;margin:8px 0 12px}
+.subtitle{max-width:900px;font-size:17px;opacity:.92;margin:0}
+.meta{display:flex;flex-wrap:wrap;gap:9px;margin-top:22px}
+.meta span{border:1px solid rgba(255,255,255,.28);padding:6px 10px;border-radius:20px;font-size:12px}
+nav{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line);box-shadow:0 2px 9px rgba(0,0,0,.04)}
+.nav{display:flex;gap:5px;overflow:auto;padding:8px 10px}
+.nav button{border:0;background:transparent;color:var(--muted);padding:11px 13px;border-radius:8px;white-space:nowrap;font-weight:bold;cursor:pointer}
+.nav button.active,.nav button:hover{background:var(--light);color:var(--blue)}
+main{padding:30px 18px 55px}
+section{display:none}.active{display:block}
+h2{font-size:29px;margin:0 0 7px;color:var(--navy)}
+.intro{color:var(--muted);max-width:920px;margin:0 0 20px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:var(--shadow)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:15px}
+.stat{font-size:31px;font-weight:800;color:var(--blue)}
+.small{font-size:13px;color:var(--muted)}
+.process{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px}
+.step{background:#fff;border:2px solid var(--line);border-radius:14px;padding:18px;text-align:left;cursor:pointer;min-height:180px;box-shadow:var(--shadow)}
+.step:hover,.step.selected{border-color:var(--blue)}
+.step .number{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--light);color:var(--blue);font-weight:800;margin-bottom:12px}
+.step.selected .number{background:var(--blue);color:#fff}
+.step h3{margin:0 0 8px;font-size:17px;color:var(--navy)}
+.step p{margin:0;color:var(--muted);font-size:13px}
+.detail{margin-top:18px;border-top:5px solid var(--blue)}
+.detail h3{font-size:24px;color:var(--navy);margin-top:0}
+.detail-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}
+.label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:800;color:var(--blue)}
+.delay{background:#fff7e9;border-left:4px solid var(--orange);padding:14px 16px;border-radius:0 9px 9px 0;margin:12px 0}
+.source{font-size:13px;color:var(--muted);border-top:1px solid var(--line);margin-top:14px;padding-top:10px}
+.source a{color:var(--blue);font-weight:bold}
+.tag{display:inline-block;background:var(--light);color:var(--blue);padding:4px 8px;border-radius:20px;font-size:11px;font-weight:bold;margin:3px 4px 3px 0}
+.timeline{border-left:3px solid #b7c8d6;margin:18px 0;padding-left:21px}
+.event{position:relative;margin:0 0 22px}.event:before{content:"";position:absolute;left:-27px;top:6px;width:11px;height:11px;border-radius:50%;background:var(--blue)}
+.event strong{color:var(--blue)}
+.conclusion{background:var(--navy);color:white;border-radius:16px;padding:24px;box-shadow:var(--shadow)}
+.conclusion h3{margin-top:0;font-size:21px}.conclusion p{font-size:17px;margin-bottom:0}
+table{width:100%;border-collapse:collapse;background:#fff}th,td{border-bottom:1px solid var(--line);padding:12px;text-align:left;vertical-align:top;font-size:13px}th{background:var(--light);color:var(--navy)}
+footer{background:#e9eef2;padding:22px;color:var(--muted);font-size:12px}
+@media(max-width:800px){.process{grid-template-columns:1fr}.detail-grid{grid-template-columns:1fr}header{padding:30px 18px}}
+</style>
+</head>
+<body>
+
+<header>
+<div class="container">
+<div class="kicker">HBO onderzoeksdashboard</div>
+<h1>Respons op illegaal gedumpt chemisch drugsafval</h1>
+<p class="subtitle">Een procesgerichte analyse van signalering tot veilige verwijdering, met aandacht voor vertragingen, technische innovaties en fysieke weerbaarheid.</p>
+<div class="meta">
+<span>Procesgericht onderzoek</span><span>Documentanalyse</span><span>Expertinterview</span><span>Casusonderzoek</span>
+</div>
+</div>
+</header>
+
+<nav><div class="container nav">
+<button class="active" data-tab="dashboard">Dashboard</button>
+<button data-tab="stappen">Stappenplan</button>
+<button data-tab="vertragingen">Vertragingen</button>
+<button data-tab="casussen">Casussen</button>
+<button data-tab="innovatie">Innovatie & weerbaarheid</button>
+<button data-tab="conclusie">Conclusie</button>
+<button data-tab="bronnen">Bronnen</button>
+</div></nav>
+
+<main class="container">
+
+<section id="dashboard" class="active">
+<h2>Onderzoeksdashboard</h2>
+<p class="intro">Het dashboard brengt de belangrijkste bevindingen uit het onderzoek samen. De centrale lijn is: <b>waar in de keten ontstaat vertraging en waardoor?</b></p>
+<div class="grid">
+<div class="card"><div class="stat">9</div><b>Processtappen</b><p class="small">Van signalering en melding tot verwerking en administratieve afronding.</p></div>
+<div class="card"><div class="stat">3</div><b>Parallelle processen</b><p class="small">Veiligheid, opsporing en milieu moeten op elkaar aansluiten.</p></div>
+<div class="card"><div class="stat">3</div><b>Casussen</b><p class="small">Halsteren, Breda Zwarte Dijk en Rijsbergen.</p></div>
+<div class="card"><div class="stat">1–2 uur</div><b>Concrete interviewbevinding</b><p class="small">Mogelijke vertraging bij het compleet krijgen van de LFO bij sommige grote dumpingen.</p></div>
+</div>
+<div class="card" style="margin-top:15px">
+<div class="label">Centrale onderzoeksvraag van deze deeluitwerking</div>
+<p><b>Wat gebeurt er vanaf het moment dat illegaal gedumpt chemisch drugsafval wordt gesignaleerd tot aan de veilige verwijdering ervan, en waar ontstaan hierbij vertragingen?</b></p>
+</div>
+</section>
+
+<section id="stappen">
+<h2>Stappenplan van de respons</h2>
+<p class="intro">Elke stap hieronder is een afzonderlijk onderdeel van de keten. Klik op een stap om te zien wat er daadwerkelijk gebeurt, waar vertraging kan ontstaan en waarop die bevinding is gebaseerd.</p>
+<div id="steps" class="process"></div>
+<div id="detail" class="card detail"></div>
+</section>
+
+<section id="vertragingen">
+<h2>Waar ontstaan de belangrijkste vertragingen?</h2>
+<p class="intro">Uit de casussen en het interview komen verschillende typen vertraging naar voren. Niet iedere mogelijke vertraging is in het onderzoek met een exacte tijdsduur vastgesteld.</p>
+<div class="grid">
+<div class="card"><h3>Technisch gevaar</h3><p>Werkzaamheden kunnen niet direct doorgaan wanneer ontgraven of benaderen nieuwe risico's oplevert. Dit is zichtbaar in de casus Breda Zwarte Dijk.</p><span class="tag">Casus Breda</span></div>
+<div class="card"><h3>Specialistische expertise</h3><p>Bij sommige grote dumpingen kan inzet van specialistische LFO-capaciteit extra tijd kosten. De geïnterviewde noemt hiervoor circa 1–2 uur.</p><span class="tag">Interview</span></div>
+<div class="card"><h3>Aanvullend onderzoek</h3><p>De omvang van bodem- en grondwaterverontreiniging kan pas na meerdere onderzoeken duidelijk worden. Dit kan leiden tot een langere voorbereiding van sanering.</p><span class="tag">Halsteren</span><span class="tag">Rijsbergen</span></div>
+<div class="card"><h3>Verantwoordelijkheid & financiering</h3><p>Onduidelijkheid over wie verantwoordelijk is voor kosten en uitvoering kan de sanering vertragen.</p><span class="tag">Breda</span><span class="tag">Halsteren</span><span class="tag">Rijsbergen</span></div>
+<div class="card"><h3>Samenwerking & overdracht</h3><p>Veiligheid, opsporing en milieu moeten informatie goed met elkaar delen. Bij overdrachtsmomenten kan vertraging ontstaan.</p><span class="tag">Deskresearch</span><span class="tag">Interview</span></div>
+<div class="card"><h3>Specialistische uitvoering</h3><p>De afvoer vraagt een gespecialiseerde afvalinzamelaar. Beschikbaarheid wordt in het onderzoek genoemd als mogelijke, maar niet empirisch bewezen vertraging.</p><span class="tag">Mogelijke vertraging</span></div>
+</div>
+</section>
+
+<section id="casussen">
+<h2>Casusonderzoek</h2>
+<p class="intro">De casussen laten zien dat 'vertraging' niet betekent dat gedurende de hele periode niets gebeurt. Soms vinden tussentijds spoedmaatregelen, onderzoeken of andere werkzaamheden plaats.</p>
+<div class="grid">
+<div class="card"><h3>Brabantse Wal / Halsteren</h3><div class="timeline">
+<div class="event"><strong>23 maart 2021</strong>Ontdekking van de dumping.</div>
+<div class="event"><strong>Eind maart 2021</strong>Restant zichtbaar/verwijderbaar drugsafval verwijderd.</div>
+<div class="event"><strong>15 juli 2021</strong>Bodemonderzoek: sterke verontreiniging tot minimaal 6 meter.</div>
+<div class="event"><strong>30 november 2023</strong>Start grootschalige bodemsanering.</div>
+</div><p><b>Belangrijkste vertraging:</b> tussen bodemonderzoek en start sanering, circa 2 jaar en 4 maanden.</p></div>
+<div class="card"><h3>Breda — Zwarte Dijk</h3><p><b>23 februari 2023:</b> circa 1.700 liter drugsafval aangetroffen.</p><p>Spoedsanering wordt gestart maar gestopt omdat verder ontgraven onder het waterniveau van een nabijgelegen waterloop kwam en risico op inkalven en verspreiding gaf.</p><p>Daarna ontstond vertraging door onduidelijkheid over financiële verantwoordelijkheid tussen meerdere eigenaren.</p><p class="small"><b>Exacte duur:</b> niet bekend in het onderzoeksbestand.</p></div>
+<div class="card"><h3>Rijsbergen — Pater Taksweg</h3><p><b>26 maart 2020:</b> sterk chemische lucht vastgesteld.</p><p>Een deel van de watergang werd snel gesaneerd. Daarna waren vervolgonderzoeken nodig naar omvang en oorzaak van de verontreiniging.</p><p>Een juridisch conflict over verantwoordelijkheid en kosten liep door tot de uitspraak van de Raad van State op 21 juni 2023.</p><p><b>2 november 2023:</b> start grote schoonmaak op het terrein.</p><p class="small">De periode mag niet worden geïnterpreteerd alsof er vier jaar niets gebeurde.</p></div>
+</div>
+</section>
+
+<section id="innovatie">
+<h2>Technische innovaties & fysieke weerbaarheid</h2>
+<p class="intro">Het onderzoek laat zien dat technologie vooral waardevol kan zijn wanneer gevaar eerder en op afstand kan worden beoordeeld en wanneer blootstelling van hulpverleners wordt beperkt.</p>
+<div class="grid">
+<div class="card"><h3>Drones</h3><p>Worden volgens het interview al gebruikt bij dumpingen op lastig begaanbare plekken om de situatie op afstand te beoordelen.</p><span class="tag">Interview</span></div>
+<div class="card"><h3>Robothond / robotica</h3><p>De geïnterviewde noemt een robothond als gewenste ontwikkeling. Daarmee kunnen metingen mogelijk worden uitgevoerd zonder dat een persoon direct het gevaarlijke gebied in hoeft.</p><span class="tag">Interview</span></div>
+<div class="card"><h3>Sensoren</h3><p>Sensor- en robottechnologie worden genoemd als mogelijke ontwikkeling voor het eerder ontdekken of beoordelen van dumpingen.</p><span class="tag">Interview</span></div>
+<div class="card"><h3>Fysieke afzetting</h3><p>Afzetlint en communicatie houden omstanders op afstand. Het interview benoemt dat mensen soms toch onder het lint door gaan.</p><span class="tag">Interview</span></div>
+<div class="card"><h3>Samenwerking</h3><p>De geïnterviewde noemt betere samenwerking tussen politie en brandweer als belangrijke verbetering. Techniek alleen is niet voldoende.</p><span class="tag">Interview</span></div>
+<div class="card"><h3>Fysieke weerbaarheid</h3><p>Het onderzoek koppelt fysieke weerbaarheid aan het beperken van blootstelling, het beheersen van verspreiding en het inzetten van geschikt materieel.</p><span class="tag">Conclusie onderzoek</span></div>
+</div>
+</section>
+
+<section id="conclusie">
+<h2>Conclusie</h2>
+<div class="conclusion">
+<h3>Kort en krachtig</h3>
+<p>Vertraging bij incidenten met illegaal gedumpt chemisch drugsafval ontstaat niet alleen door de gevaarlijke stoffen zelf, maar vooral op momenten waarop veiligheid, opsporing en milieuonderzoek samenkomen. Technische innovaties zoals drones, sensoren en robotica kunnen helpen om risico's eerder en op afstand in kaart te brengen en blootstelling te beperken. Fysieke weerbaarheid maakt het veilig uitvoeren van werkzaamheden mogelijk. Voor een daadwerkelijk snellere respons zijn daarnaast duidelijke verantwoordelijkheden, goede informatieoverdracht en nauwe samenwerking tussen betrokken partijen noodzakelijk.</p>
+</div>
+<div class="card" style="margin-top:18px">
+<div class="label">Belangrijkste antwoord op de onderzoeksvraag</div>
+<p><b>Technische innovaties en fysieke weerbaarheid dragen vooral bij door gevaarlijke situaties veiliger en sneller beoordeelbaar te maken en de blootstelling van hulpverleners te beperken. De grootste vertragingen kunnen echter ook bestuurlijk en organisatorisch ontstaan. Daarom moeten techniek, fysieke veiligheid en samenwerking als één geheel worden verbeterd.</b></p>
+</div>
+</section>
+
+<section id="bronnen">
+<h2>Bronnen</h2>
+<p class="intro">De bronnen hieronder zijn afkomstig uit het definitieve onderzoeksbestand. Bij het stappenplan worden bronnen per stap gekoppeld.</p>
+<div class="card"><table><thead><tr><th>Bron</th><th>Type</th><th>Link</th></tr></thead><tbody id="sources"></tbody></table></div>
+</section>
+
+</main>
+<footer><div class="container">HBO onderzoeksdashboard · gebaseerd op het definitieve onderzoeksbestand en het interview met Max Rachmat, adviseur gevaarlijke stoffen, Brandweer Venlo, 1 oktober 2026.</div></footer>
+
+<script>
+const S={
+werkwijze:["CCV – Werkwijze bij aantreffen drugsafval","Deskresearch","https://hetccv.nl/themas/georganiseerde-criminaliteit-en-ondermijning/drugsafval/werkwijze-bij-aantreffen-drugsafval/"],
+faq:["CCV – Antwoorden op veelgestelde vragen over drugsafval","Deskresearch","https://hetccv.nl/themas/georganiseerde-criminaliteit-en-ondermijning/drugsafval/antwoorden-op-veelgestelde-vragen-over-drugsafval/"],
+afvoer:["CCV – Drugsafval afvoeren","Deskresearch","https://hetccv.nl/themas/georganiseerde-criminaliteit-en-ondermijning/drugsafval/drugsafval-afvoeren/"],
+politie:["Politie – Wat doe ik als ik een dumping van drugsafval zie of drugsafval vind?","Deskresearch","https://www.politie.nl/informatie/wat-doe-ik-als-ik-een-dumping-van-drugsafval-zie-of-drugsafval-vind.html"],
+fumo:["FUMO – Protocol aanpak drugsafvaldumpingen","Deskresearch","https://www.fumo.nl/fileadmin/Bestanden/Documenten/PDF/AB_vergaderingen/AB_20230406/10_agendapunt_05_Protocol_Aanpak_Drugsafvaldumpingen_in_de_provincie_Frysl%C3%A2n.docx.pdf"],
+iplo:["IPLO – Afval dumpen","Deskresearch","https://iplo.nl/thema/afval/afval-dumpen/"],
+brabant:["Provincie Noord-Brabant – Bodemsanering Brabantse Wal","Deskresearch","https://www.brabant.nl/publish/pages/18827/feiten_en_cijfers_bodemsanering_brabantse_wal_te_halsteren.pdf"],
+tk:["Tweede Kamer – Antwoord op vragen over het niet opruimen van drugsafval","Deskresearch","https://www.tweedekamer.nl/kamerstukken/kamervragen/detail?did=2022D12227&id=2022Z02237"],
+strukton:["Strukton – Drugsafvaldumping en spoedsanering Breda","Deskresearch","https://struktonmilieutechniek.nl/project/2023/05/drugsafvaldumping-en-spoedsanering-breda/"],
+rvs21:["Raad van State – uitspraak 202107158/1/R1","Deskresearch","https://www.raadvanstate.nl/uitspraken/@128236/202107158-1-r1/"],
+rvs23:["Raad van State – uitspraak 202204817/1/R1","Deskresearch","https://www.raadvanstate.nl/uitspraken/%40137904/202204817-1-r1/"],
+ob:["Omroep Brabant – Schoonmaak na enorme drugsafvaldumping","Deskresearch","https://www.omroepbrabant.nl/nieuws/4364299/schoonmaak-na-enorme-drugsafvaldumping-gaat-na-4-jaar-eindelijk-beginnen"],
+lands:["Brabants Landschap – Drugsafval gedumpt in speciale drugsput","Deskresearch","https://www.brabantslandschap.nl/actueel/nieuws/drugsafval-gedumpt-in-speciale-drugsput"],
+nos:["NOS – Opruimen enorme drugsafvalput begonnen","Deskresearch","https://nos.nl/artikel/2499816-opruimen-van-enorme-drugsafvalput-in-brabant-begonnen-400-bomen-gekapt"],
+interview:["Interview Max Rachmat – adviseur gevaarlijke stoffen, Brandweer Venlo (1-10-2026)","Interview",""]
+};
+
+const steps=[
+["1","Signalering en melding","Een burger of andere melder treft bijvoorbeeld vaten, jerrycans of ander materiaal aan dat kan wijzen op drugsafval. De melding wordt vanaf veilige afstand gedaan en de locatie wordt niet betreden.","Onvolledige informatie over locatie, aard en omvang.","Bij de eerste melding is nog niet duidelijk welke stoffen aanwezig zijn en welke risico's daarbij horen.","politie"],
+["2","Eerste beoordeling door hulpdiensten","Politie en brandweer beoordelen wat er aanwezig is en welke risico's er zijn voor mens, dier en milieu. Er wordt gekeken naar onder andere lekkage, brand, dampen en gevaarlijke stoffen. Indien nodig wordt specialistische expertise ingezet.","Wachten op deskundige beoordeling of specialistische expertise.","Werkzaamheden kunnen pas starten nadat een deskundige de situatie veilig heeft verklaard. Uit het interview blijkt dat bij sommige grote dumpingen de LFO vanuit het land moet worden samengesteld; dit kan circa 1–2 uur kosten.","faq","werkwijze","interview"],
+["3","Afzetten en veiligstellen van de locatie","De locatie wordt afgezet zodat omstanders niet met het afval in aanraking komen. Tegelijk wordt het plaats delict beschermd zodat sporen niet verloren gaan.","De locatie moet beschikbaar blijven voor onderzoek.","Opruimen kan niet zomaar beginnen zolang sporen veiliggesteld moeten worden. Het interview noemt daarnaast dat omstanders soms toch onder het afzetlint doorgaan.","fumo","werkwijze","interview"],
+["4","Opsporing en veiligstellen van sporen","De politie onderzoekt de dumping, zoekt naar sporen en probeert vast te stellen of de dumping verband houdt met een drugslab en wie verantwoordelijk is. De LFO kan hierbij specifieke expertise leveren.","Duur van het opsporingsonderzoek.","Zolang relevante sporen moeten worden veiliggesteld, kan de opruiming niet altijd direct doorgaan.","werkwijze"],
+["5","Milieukundige beoordeling van afval en omgeving","Er wordt vastgesteld welke stoffen mogelijk aanwezig zijn, hoeveel afval er ligt en of bodem, oppervlaktewater of grondwater zijn geraakt. Ook wordt gekeken welke maatregelen nodig zijn om verdere verspreiding te voorkomen.","Aanvullend bodem- of milieukundig onderzoek.","Wanneer de omvang of aard van de verontreiniging nog niet duidelijk is, kan aanvullend onderzoek nodig zijn voordat een passende aanpak wordt vastgesteld.","iplo","werkwijze"],
+["6","Bepalen van aanpak, verantwoordelijkheid en uitvoerder","Wanneer de situatie in kaart is gebracht, wordt bepaald wie de verwijdering organiseert, welke aanpak nodig is en welke partij het afval veilig kan verwijderen. Dit is een belangrijk overdrachtsmoment van de acute veiligheids- en opsporingsfase naar de opruimfase.","Onduidelijkheid over verantwoordelijkheid of afstemming tussen organisaties.","De verwijdering vraagt samenwerking en duidelijke communicatie. In de casussen Breda, Halsteren en Rijsbergen speelde verantwoordelijkheid en/of financiering aantoonbaar een rol.","afvoer","strukton","tk","rvs23"],
+["7","Verzamelen en afvoeren van chemisch afval","Na de noodzakelijke beoordelingen en afstemming kan het specialistische opruimwerk beginnen. Het afval wordt verzameld, veilig vervoerd en naar een geschikte verwerker gebracht.","Beschikbaarheid van specialistische uitvoering.","Drugsafval kan niet door een reguliere afvalinzamelaar worden verwijderd. Het onderzoek noemt beperkte beschikbaarheid als mogelijke theoretische vertraging; hiervoor is in de onderzochte casussen geen exacte wachttijd vastgesteld.","afvoer"],
+["8","Bodemonderzoek en eventueel saneren","Na verwijdering van vaten of jerrycans wordt beoordeeld of bodem, grondwater of oppervlaktewater nog verontreinigd zijn. Bij ernstige verontreiniging kunnen aanvullende saneringsmaatregelen nodig zijn.","Extra onderzoek en langdurige sanering.","Het verwijderen van het zichtbare afval betekent niet automatisch dat de milieuschade is opgelost. Vooral Halsteren en Rijsbergen laten zien dat bodemonderzoek, besluitvorming en sanering langdurig kunnen zijn.","brabant","tk","rvs21","rvs23","ob"],
+["9","Verwerking en administratieve afronding","Het verzamelde afval wordt verwerkt. Daarna worden relevante gegevens, rapportages, betrokken partijen en kosten vastgelegd. Ook kunnen nog milieu- of opsporingsactiviteiten openstaan.","Administratieve afhandeling en openstaande onderzoeken.","De fysieke verwijdering is niet automatisch het einde van de totale afhandeling.","werkwijze"]
+];
+
+function sourceBlock(ids){
+ return ids.map(id=>{const s=S[id];return `<div class="source"><span class="tag">${s[1]}</span> ${s[0]} ${s[2]?`· <a href="${s[2]}" target="_blank" rel="noopener">Open bron ↗</a>`:""}</div>`}).join("");
+}
+const stepsEl=document.getElementById("steps"),detail=document.getElementById("detail");
+steps.forEach((s,i)=>{
+ const b=document.createElement("button");b.className="step";b.type="button";b.innerHTML=`<div class="number">${s[0]}</div><h3>${s[1]}</h3><p>${s[2]}</p>`;
+ b.onclick=()=>show(i);stepsEl.appendChild(b);
+});
+function show(i){
+ document.querySelectorAll(".step").forEach((x,j)=>x.classList.toggle("selected",j===i));
+ const s=steps[i];
+ detail.innerHTML=`<div class="label">Stap ${s[0]}</div><h3>${s[1]}</h3>
+ <div class="detail-grid"><div><p><b>Wat gebeurt er daadwerkelijk?</b></p><p>${s[2]}</p>
+ <div class="delay"><b>Waar kan vertraging ontstaan?</b><br>${s[3]}<br><br><b>Waarom?</b><br>${s[4]}</div></div>
+ <div><div class="label">Onderbouwing</div>${sourceBlock(s.slice(5))}</div></div>`;
+}
+show(0);
+
+document.querySelectorAll("[data-tab]").forEach(btn=>btn.onclick=()=>{
+ document.querySelectorAll("[data-tab]").forEach(b=>b.classList.remove("active"));
+ document.querySelectorAll("main section").forEach(s=>s.classList.remove("active"));
+ btn.classList.add("active");document.getElementById(btn.dataset.tab).classList.add("active");
+ window.scrollTo(0,0);
+});
+
+document.getElementById("sources").innerHTML=Object.values(S).map(s=>`<tr><td>${s[0]}</td><td>${s[1]}</td><td>${s[2]?`<a href="${s[2]}" target="_blank" rel="noopener">Open bron ↗</a>`:"Interview opgenomen in onderzoeksbestand"}</td></tr>`).join("");
+</script>
+</body>
+</html>
